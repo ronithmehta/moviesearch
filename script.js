@@ -41,23 +41,21 @@ function getRecommendations(url) {
 function showMovies(data) {
   main.innerHTML = "";
   data.forEach((movie) => {
-    const { title, poster_path, vote_average, overview } = movie;
+    const { id, title, poster_path, vote_average, overview } = movie;
     const movieEl = document.createElement("div");
     movieEl.classList.add("movie");
     movieEl.innerHTML = `
-        <img src="${IMG_URL + poster_path}" alt="${title}">
-        <div class="movie-info">
-                <h3>${title}</h3>
-                <span class="${getColor(vote_average)}">${
-      Math.round(vote_average * 10) / 10
-    }</span>
-            </div>
-            <div class="overview">
-                <h3>Overview</h3>
-                ${overview}
-        </div>
-        `;
-
+      <img src="${IMG_URL + poster_path}" alt="${title}">
+      <div class="movie-info">
+        <h3>${title}</h3>
+        <span class="${getColor(vote_average)}">${Math.round(vote_average * 10) / 10}</span>
+      </div>
+      <div class="overview">
+        <h3>Overview</h3>
+        <p>${overview}</p>
+      </div>
+      <button class="watch-btn" onclick="watchMovie('${title}')">Watch Movie</button>
+    `;
     main.appendChild(movieEl);
   });
 }
@@ -94,6 +92,12 @@ function getColor(vote) {
   } else {
     return "red";
   }
+}
+
+function watchMovie(movieName) {
+  const searchQuery = encodeURIComponent(movieName);
+  const googleUrl = `https://www.google.com/search?q=${searchQuery}`;
+  window.open(googleUrl, '_blank');
 }
 
 form.addEventListener("submit", (e) => {
